@@ -147,7 +147,7 @@ public partial class @PlayerAction : IInputActionCollection2, IDisposable
                     ""id"": ""abd4fa36-6654-4ed6-b4fb-c5281e47fb77"",
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2"",
+                    ""processors"": ""InvertVector2(invertX=false)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,

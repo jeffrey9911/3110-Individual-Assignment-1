@@ -16,9 +16,9 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void ChangeScore(int coinValue)
+    public void AddScore(int coinValue)
     {
         score += coinValue;
-        Debug.Log(score);
+        Debug.Log("[Points]: " + score);
     }
 }

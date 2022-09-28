@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     Vector2 move;
     Vector2 rotate;
     private float walkSpeed = 5.0f;
+
     public Camera playerCamera;
+    public Transform cameraController;
     Vector3 cameraRotation;
     
     // Player jump
@@ -21,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = true;
     public float jump = 5.0f;
 
-    public float distanceToGround;
+    public float distanceToGround = 0.07f;
 
     // Player animation
     Animator playerAnimator;
@@ -57,6 +59,11 @@ public class PlayerController : MonoBehaviour
         inputAction.Player.Shoot.performed += cntxt => Shoot();
 
 
+        // After w2
+        inputAction.Player.Look.performed += cntxt => Look(cntxt.ReadValue<Vector2>());
+
+
+
         rb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         distanceGround = GetComponent<Collider>().bounds.extents.y;
@@ -70,19 +77,29 @@ public class PlayerController : MonoBehaviour
 
         bulletRb.AddForce(transform.up * 5.0f, ForceMode.Impulse);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
     private void Jump()
     {
         if(isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jump);
+            rb.velocity = new Vector3(rb.velocity.x, jump, rb.velocity.z);
             isGrounded = false;
         }
+    }
+
+    private void Look(Vector2 deltaMouse)
+    {
+        float dX = deltaMouse.x;
+        float dY = deltaMouse.y;
+
+        Vector3 playerRot = this.transform.rotation.eulerAngles;
+        Vector3 controllerRot = cameraController.transform.rotation.eulerAngles;
+
+        this.transform.rotation = Quaternion.Euler(playerRot.x, playerRot.y + dX * 0.3f, playerRot.z);
+        cameraController.rotation = Quaternion.Euler(controllerRot.x + dY * 0.3f, controllerRot.y + dX * 0.3f, controllerRot.z);
+
+
     }
 
     // Update is called once per frame
